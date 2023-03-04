@@ -1,15 +1,15 @@
 <template>
-    <h1>Host page</h1>
+    <h1>Queuer page</h1>
     <div v-if="!host">
         <GoogleLogin :callback="handleLogin" />
     </div>
     <div v-else-if="host === 'NEW_USER'">
         <input v-model="newHost.firstName" placeholder="First name" />
-        <input v-model="newHost.lastName" placeholder="Last name"/>
-        <input v-model="newHost.email" placeholder="Email"/>
-        <button @click=" addUser">Sign in</button>
+        <input v-model="newHost.lastName" placeholder="Last name" />
+        <input v-model="newHost.email" placeholder="Email" />
+        <button @click="addUser">Sign in</button>
     </div>
-    <div v-else class="hostInformation">
+    <div v-else class="queuerInformation">
         <h2>Hello {{ host.firstName + ' ' + host.lastName }}</h2>
         <table>
             <thead>
@@ -23,13 +23,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="meeting in host.hostedMeetings">
-                    <td>{{ meeting.queuerFirstName + ' ' + meeting.queuerLastName }}</td>
+                <tr v-for="meeting in host.queuedMeetings">
+                    <td>{{ meeting.hostFirstName + ' ' + meeting.hostLastName }}</td>
                     <td>{{ formatDate(meeting.date) }}</td>
                     <td>{{ meeting.length }} minutes</td>
                     <td>{{ meeting.description }}</td>
                     <td>{{ meeting.address }}</td>
-                    <td>{{ meeting.phonNumber }}</td>
+                    <td>{{ meeting.hostPhonNumber }}</td>
                 </tr>
             </tbody>
         </table>
@@ -69,7 +69,7 @@ export default {
             this.$store.dispatch('loadUser', googleToken)
 
         },
-        addUser(){
+        addUser() {
             console.log('adding new user:', this.newHost);
             this.$store.dispatch('addHost', this.newHost)
         }

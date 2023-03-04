@@ -5,7 +5,6 @@ import { userService } from '../../services/user-service'
 export default {
     state: {
         host:null,
-        user:null
     },
     getters: {
         getHost(state) {
@@ -48,6 +47,15 @@ export default {
                 const updatedHost = await hostService.updateHost(host)
                 console.log("updatedHost:",updatedHost);
                 context.commit({ type: 'setUpdatedHost', updatedHost })
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        async updateQueuerMeeting(context, meeting) {
+            console.log('from updateQueuerMeeting')
+            try {
+                const updatedQMeeting = await hostService.updateQueuerMeeting(meeting)
+                console.log("updatedQMeeting:",updatedQMeeting);
             } catch (err) {
                 console.log(err)
             }

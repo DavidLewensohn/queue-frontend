@@ -5,11 +5,12 @@ import headerCmp from './components/header.vue'
 
 <template>
   <header>
-    <headerCmp msg="Queue" />
+    <headerCmp msg="PreQ" />
     
     <nav>
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/host">Host</RouterLink>
+      <RouterLink to="/queuer">Queuer</RouterLink>
     </nav>
   </header>
   <div class="main-app">
