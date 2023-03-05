@@ -1,16 +1,16 @@
 <template>
     <h1>Host page</h1>
-    <div v-if="!host">
+    <div v-if="!user">
         <GoogleLogin :callback="handleLogin" />
     </div>
-    <div v-else-if="host === 'NEW_USER'">
-        <input v-model="newHost.firstName" placeholder="First name" />
-        <input v-model="newHost.lastName" placeholder="Last name"/>
-        <input v-model="newHost.email" placeholder="Email"/>
+    <div v-else-if="user === 'NEW_USER'">
+        <input v-model="newUser.firstName" placeholder="First name" />
+        <input v-model="newUser.lastName" placeholder="Last name"/>
+        <input v-model="newUser.email" placeholder="Email"/>
         <button @click=" addUser">Sign in</button>
     </div>
-    <div v-else class="hostInformation">
-        <h2>Hello {{ host.firstName + ' ' + host.lastName }}</h2>
+    <div v-else class="userInformation">
+        <h2>Hello {{ user.firstName + ' ' + user.lastName }}</h2>
         <table>
             <thead>
                 <tr>
@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="meeting in host.hostedMeetings">
+                <tr v-for="meeting in user.hostedMeetings">
                     <td>{{ meeting.queuerFirstName + ' ' + meeting.queuerLastName }}</td>
                     <td>{{ formatDate(meeting.date) }}</td>
                     <td>{{ meeting.length }} minutes</td>
@@ -33,7 +33,7 @@
                 </tr>
             </tbody>
         </table>
-        <button @click="editHost(hostId)">Edit</button>
+        <button @click="editUser(userId)">Edit</button>
     </div>
 </template>
 <script>
@@ -42,8 +42,8 @@ import moment from 'moment'
 export default {
     data() {
         return {
-            hostId: '',
-            newHost: {
+            userId: '',
+            newUser: {
                 firstName: 'Duvid',
                 lastName: 'Lev',
                 email: 'duvid777@gmail.com',
@@ -52,12 +52,12 @@ export default {
         }
     },
     methods: {
-        getHost() {
-            console.log('Getting host:', this.hostId)
-            this.$store.dispatch('loadHost', this.hostId)
+        getUser() {
+            console.log('Getting user:', this.userId)
+            this.$store.dispatch('loadUser', this.userId)
         },
-        editHost(hostId) {
-            this.$router.push('/host-edit/' + hostId)
+        editUser(userId) {
+            this.$router.push('/host-edit/' + userId)
         },
         formatDate(date) {
             return moment(date).format("MM/DD/YYYY hh:mm A")
@@ -66,22 +66,22 @@ export default {
             console.log("Handle the response", response)
             const googleToken = response.credential;
             console.log("handleLogin  googleToken:", googleToken)
-            this.$store.dispatch('loadUser', googleToken)
+            this.$store.dispatch('loadGoogleUser', googleToken)
 
         },
         addUser(){
-            console.log('adding new user:', this.newHost);
-            this.$store.dispatch('addHost', this.newHost)
+            console.log('adding new user:', this.newUser);
+            this.$store.dispatch('addUser', this.newUser)
         }
     },
     computed: {
-        host() {
-            return this.$store.getters.getHost
+        user() {
+            return this.$store.getters.getUser
         },
 
     },
     mounted() {
-        console.log('Upload component', this.hostId)
+        console.log('Upload component', this.userId)
     }
 }
 </script>

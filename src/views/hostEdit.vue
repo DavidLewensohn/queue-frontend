@@ -1,8 +1,8 @@
 <template>
     <h1>Host edit page</h1>
-    <div v-if="host">
-        <p><input v-model="host.firstName" /><input v-model="host.lastName" /></p>
-        <div class="meeting" v-for="(meeting, index) in host.hostedMeetings">
+    <div v-if="user">
+        <p><input v-model="user.firstName" /><input v-model="user.lastName" /></p>
+        <div class="meeting" v-for="(meeting, index) in user.hostedMeetings">
             <p><input v-model="meeting.queuerFirstName
             " /><input v-model="meeting.queuerLastName" />
             <p class="datepicker">
@@ -25,22 +25,22 @@ export default {
     components: { datepicker },
     data() {
         return {
-            host: null,
+            user: null,
         }
     },
     methods: {
         updateMeeting(index) {
-            console.log("Saving host:", this.host)
-            this.$store.dispatch('updateQueuerMeeting', this.host.hostedMeetings[index])
-            this.$store.dispatch('updateHost', this.host)
+            console.log("Saving user:", this.user)
+            this.$store.dispatch('updateQueuerMeeting', this.user.hostedMeetings[index])
+            this.$store.dispatch('updateUser', this.user)
             this.$router.push('/host/')
         },
         removeMeet(index) {
-            this.host.hostedMeetings.splice(index, 1)
+            this.user.hostedMeetings.splice(index, 1)
         },
         addMeeting() {
             let date = new Date();
-            this.host.hostedMeetings.push({
+            this.user.hostedMeetings.push({
                 "queuerFirstName": "",
                 "queuerLastName": "",
                 "date": date.toISOString(),
@@ -48,14 +48,14 @@ export default {
                 "length": 30
             })
         },
-        async getHost() {
-            this.host = await this.$store.getters.getHost
+        async getUser() {
+            this.user = await this.$store.getters.getUser
         }
     },
     computed: {
     },
     created() {
-        this.getHost()
+        this.getUser()
     }
 }
 </script>

@@ -1,8 +1,8 @@
 import { createStore } from 'vuex'
-import hostStore from './modules/host-store.js'
+import userStore from './modules/user-store.js'
 
 
 const store = createStore({
-    modules: {hostStore}
+    modules: {userStore}
 })
 export default store
