@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import homeView from '../views/homeView.vue'
+import loginView from '../views/loginView.vue'
 import hostEdit from '../views/hostEdit.vue'
 import hostView from '../views/hostView.vue'
 import queuerView from '../views/queuerView.vue'
@@ -11,6 +12,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: homeView
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: loginView
     },
     {
       path: '/host',

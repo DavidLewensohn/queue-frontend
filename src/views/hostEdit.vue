@@ -1,17 +1,24 @@
 <template>
     <h1>Host edit page</h1>
-    <div v-if="user">
-        <p><input v-model="user.firstName" /><input v-model="user.lastName" /></p>
+    <div v-if="user && user != 'NEW_USER'">
+       <h3>{{user.firstName + ' ' + user.lastName}}</h3> 
         <div class="meeting" v-for="(meeting, index) in user.hostedMeetings">
-            <p><input v-model="meeting.queuerFirstName
-            " /><input v-model="meeting.queuerLastName" />
+            <p>
+                <input v-model="meeting.queuer.firstName" placeholder="First Name" />
+                <input v-model="meeting.queuer.lastName" placeholder="Last Name" />
+                <input v-model="meeting.queuer.email" placeholder="Email" />
+                <input v-model="meeting.queuer.phone" placeholder="Phone Number" />
             <p class="datepicker">
-                <datepicker v-model="meeting.date" />
-            </p> <input v-model="meeting.length" />
-            <input v-model="meeting.description" /> <button @click="removeMeet(index)">Remove</button>
+                <datepicker v-model="meeting.startTime" />
+            </p>
+            <p class="datepicker">
+                <datepicker v-model="meeting.endTime" />
+            </p>
+            <input v-model="meeting.description" placeholder="Description" />
+            <button @click="removeMeet(index)">Remove</button>
             <button @click="updateMeeting(index)">Save</button>
             </p>
-            
+
         </div>
         <button @click="addMeeting()">Add meeting</button>
     </div>
@@ -41,12 +48,30 @@ export default {
         addMeeting() {
             let date = new Date();
             this.user.hostedMeetings.push({
-                "queuerFirstName": "",
-                "queuerLastName": "",
-                "date": date.toISOString(),
-                "description": "",
-                "length": 30
-            })
+                    "host": {
+                        "firstName": this.user.firstName,
+                        "lastName": this.user.lastName,
+                        "email": this.user.email,
+                        "phone": this.user.phone
+                    },
+                    "queuer": {
+                        "firstName": '',
+                        "lastName": '',
+                        "email": '',
+                        "phone": ''
+                    },
+                    "startTime": date.toISOString(),
+                    "endTime": date.toISOString(date.setTime(date.getTime() + 60 * 60 * 1000)),
+                    "description": '',
+                    "address": {
+                        "street": '',
+                        "city": '',
+                        "state": '',
+                        "country": ''
+                    },
+                    "meetingID": Math.floor(Math.random() * 1000000),
+                    "status": "upcoming"
+                })
         },
         async getUser() {
             this.user = await this.$store.getters.getUser
